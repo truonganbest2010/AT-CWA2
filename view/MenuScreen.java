@@ -18,5 +18,15 @@ public class MenuScreen {
         menuPanel.setLayout(new GridLayout(2, 1));
         container.add(BorderLayout.CENTER, menuPanel);
 
+        var drawingButton = new JButton("Drawing Simulator");
+        menuPanel.add(drawingButton);
+
+        drawingButton.addActionListener(e -> {
+            window.getContentPane().removeAll();
+            var panel = new DrawingPanel(window);
+            panel.init();
+            window.pack();
+            window.revalidate();
+        });
     }
 }

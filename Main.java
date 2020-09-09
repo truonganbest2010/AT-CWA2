@@ -11,7 +11,7 @@ public class Main {
         window.setLocation(400, 100);
 
         var menu = new MenuScreen(window);
-        
+        menu.init();
 
         window.pack();
         window.setVisible(true);
