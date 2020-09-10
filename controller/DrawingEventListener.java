@@ -26,7 +26,7 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
 
         Object source = e.getSource();
         if (source == panel.getExitBtn()){ // control
-        
+            System.exit(0);
         } else if (source == panel.getClearBtn()){
             panel.getCanvas().getShapeList().clear();
             panel.getCanvas().repaint();
@@ -36,14 +36,24 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
 
         else if (source == panel.getRedBtn()){
             panel.setColor(Color.red);
+            panel.getColorSetShow().setColor(Color.red);
+            panel.getColorSetShow().repaint();
         } else if (source == panel.getGreenBtn()){
             panel.setColor(Color.green);
+            panel.getColorSetShow().setColor(Color.green);
+            panel.getColorSetShow().repaint();
         } else if (source == panel.getBlueBtn()){
             panel.setColor(Color.blue);
+            panel.getColorSetShow().setColor(Color.blue);
+            panel.getColorSetShow().repaint();
         } else if (source == panel.getYellowBtn()){
             panel.setColor(Color.yellow);
+            panel.getColorSetShow().setColor(Color.yellow);
+            panel.getColorSetShow().repaint();
         } else if (source == panel.getBlackBtn()){
             panel.setColor(Color.black);
+            panel.getColorSetShow().setColor(Color.black);
+            panel.getColorSetShow().repaint();
         }
 
 

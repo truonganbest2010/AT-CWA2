@@ -9,9 +9,13 @@ import controller.DrawingEventListener;
 public class DrawingPanel {
 
     private JFrame window;
-    private DrawingCanvas canvas;
-    private ColorGrid colorGrid;
+    private DrawingCanvas canvas = new DrawingCanvas(this);
+    private ColorGrid colorGrid = new ColorGrid(this, 10, 10, 20);
+    private CurrentColor currentColor = new CurrentColor(this, 20);
+    private ColorSetShow colorSetShow = new ColorSetShow(150);
 
+
+    private ButtonGroup colorGroup = new ButtonGroup();
     private JRadioButton redBtn, greenBtn, blueBtn, yellowBtn, blackBtn;
     private JRadioButton pencilBtn, lineBtn, ovalBtn, circleBtn, rectangleBtn, squareBtn;
     private JButton clearBtn, exitBtn;
@@ -29,9 +33,9 @@ public class DrawingPanel {
         window.setTitle("Drawing Simulator");
 
         /* RIGHT */
-            JPanel rightPanel = new JPanel();
-            container.add(BorderLayout.EAST, rightPanel);
-            rightPanel.setLayout(new GridLayout(3, 1)); // 3 row 1 col
+        JPanel rightPanel = new JPanel();
+        container.add(BorderLayout.EAST, rightPanel);
+        rightPanel.setLayout(new GridLayout(4, 1)); // 3 row 1 col
 
             /* Colors */
             blueBtn = new JRadioButton("B");
@@ -40,26 +44,34 @@ public class DrawingPanel {
             yellowBtn = new JRadioButton("Y");
             blackBtn = new JRadioButton("Default");
                 blackBtn.setSelected(true);
-            ButtonGroup colorGroup = new ButtonGroup(); // group color buttons
+            // group color buttons
             colorGroup.add(redBtn);
             colorGroup.add(greenBtn);
             colorGroup.add(blueBtn);
             colorGroup.add(yellowBtn);
             colorGroup.add(blackBtn);
             
-
+            /* Color Panel */
             JPanel colorPanel = new JPanel();
             colorPanel.setLayout(new GridLayout(5,1));
             TitledBorder colorBoxTitle = BorderFactory.createTitledBorder("Main Color");
             colorPanel.setBorder(colorBoxTitle);
             colorPanel.setBackground(Color.lightGray);
-            colorPanel.add(redBtn);
-            colorPanel.add(greenBtn);
-            colorPanel.add(blueBtn);
-            colorPanel.add(yellowBtn);
-            colorPanel.add(blackBtn);
+                colorPanel.add(redBtn);
+                colorPanel.add(greenBtn);
+                colorPanel.add(blueBtn);
+                colorPanel.add(yellowBtn);
+                colorPanel.add(blackBtn);
             
-            rightPanel.add(colorPanel);
+        rightPanel.add(colorPanel);
+
+            /* Current Color Set */
+            
+            JPanel colorSetPanel = new JPanel();
+            TitledBorder currentColorSetTitle = BorderFactory.createTitledBorder("Present Color");
+            colorSetPanel.setBorder(currentColorSetTitle);
+            colorSetPanel.add(colorSetShow);
+        rightPanel.add(colorSetPanel);
 
             /* Shape Options */
             pencilBtn = new JRadioButton("Pencil");
@@ -69,7 +81,7 @@ public class DrawingPanel {
             circleBtn = new JRadioButton("Circle");
             rectangleBtn = new JRadioButton("Rectangle");
             squareBtn = new JRadioButton("Square");
-            ButtonGroup shapeBtnGroup = new ButtonGroup();
+            var shapeBtnGroup = new ButtonGroup();
             shapeBtnGroup.add(pencilBtn);
             shapeBtnGroup.add(lineBtn);
             shapeBtnGroup.add(ovalBtn);
@@ -87,10 +99,8 @@ public class DrawingPanel {
             shapePanel.add(ovalBtn);
             shapePanel.add(circleBtn);
             shapePanel.add(rectangleBtn);
-            shapePanel.add(squareBtn);
-            
-            rightPanel.add(shapePanel);
-
+            shapePanel.add(squareBtn);        
+        rightPanel.add(shapePanel);
 
             /* Control Buttons */
             clearBtn = new JButton("Clear");
@@ -101,43 +111,58 @@ public class DrawingPanel {
             controlPanel.setBorder(controlBoxTitle);
             controlPanel.add(clearBtn);
             controlPanel.add(exitBtn);
-            rightPanel.add(controlPanel);
+
+        rightPanel.add(controlPanel);
 
         /* CENTER */
 
-                /* Canvas */
-        canvas = new DrawingCanvas(this);
+            /* Canvas */
         JPanel canvasPanel = new JPanel();
-        TitledBorder canvasTitle = BorderFactory.createTitledBorder("Drawing Here");
+        TitledBorder canvasTitle = BorderFactory.createTitledBorder("Drawing Simulator");
         canvasPanel.setBorder(canvasTitle);
         canvasPanel.setBackground(Color.LIGHT_GRAY);
+        container.add(BorderLayout.CENTER, canvasPanel);   
         canvasPanel.add(canvas);
-        container.add(BorderLayout.CENTER, canvasPanel);
 
         /* WEST */
 
-                /* Color Grid */
-
-        colorGrid = new ColorGrid(this,20, 10, 10);
-        JPanel colorGridPanel = new JPanel();
-        colorGridPanel.setLayout(new GridLayout(2,1));
+        JPanel colorGeneratorPanel = new JPanel();
+        colorGeneratorPanel.setLayout(new GridLayout(3,1));
         TitledBorder colorGridTitle = BorderFactory.createTitledBorder("Color Generator");
-        colorGridPanel.setBorder(colorGridTitle);
-        colorGridPanel.setBackground(Color.LIGHT_GRAY);
-        
-                /* Current Color */
+        colorGeneratorPanel.setBorder(colorGridTitle);
+        colorGeneratorPanel.setBackground(Color.LIGHT_GRAY);
+        container.add(BorderLayout.WEST, colorGeneratorPanel);
+                
+            /* Color Grid */    
+        colorGeneratorPanel.add(colorGrid);
 
-        colorGridPanel.add(colorGrid);
-        container.add(BorderLayout.WEST, colorGridPanel);
+            /* Current Color */ 
+            JPanel currentColorPanel = new JPanel();
+            currentColorPanel.setLayout(new GridLayout(2,1));
+            TitledBorder currentColorTitle = BorderFactory.createTitledBorder("Recent Colors");
+            currentColorPanel.setBorder(currentColorTitle);
+            currentColorPanel.setBackground(Color.LIGHT_GRAY);
+            currentColorPanel.add(currentColor);
+            
+            /* Generate Button */
+            var generateBtn = new JButton("Generate Colors");
+            generateBtn.addActionListener(e -> {
+                colorGrid.generateColor();
+                colorGrid.repaint();
+            });
+            currentColorPanel.add(generateBtn);
 
+        colorGeneratorPanel.add(currentColorPanel);
 
-
-        // SOUTH
+        /* SOUTH */
         JPanel southPanel = new JPanel();
         container.add(BorderLayout.SOUTH, southPanel);
         southPanel.setLayout(new GridLayout(1, 2));
-        TitledBorder pixelTitle = BorderFactory.createTitledBorder("Pixel");
+        TitledBorder pixelTitle = BorderFactory.createTitledBorder("Pixels");
         southPanel.setBorder(pixelTitle);
+        
+        XYStatus.setText(" ");
+        mouseStatus.setText("Mouse: ...");
         southPanel.add(XYStatus);
         southPanel.add(mouseStatus);
 
@@ -168,6 +193,7 @@ public class DrawingPanel {
             canvas.addMouseListener(eventListener);
             canvas.addMouseMotionListener(eventListener);
 
+
     }
 
     public JFrame getWindow(){
@@ -182,6 +208,14 @@ public class DrawingPanel {
         return colorGrid;
     }
 
+    public CurrentColor getCurrentColor(){
+        return currentColor;
+    }
+
+    public ColorSetShow getColorSetShow(){
+        return colorSetShow;
+    }
+
     public Color setColor(Color color){
         return this.color = color;
     }
@@ -191,6 +225,10 @@ public class DrawingPanel {
     }
 
     // Color Getters
+    public ButtonGroup getColorGroup(){
+        return colorGroup;
+    }
+
     public JRadioButton getRedBtn(){
         return redBtn;
     }

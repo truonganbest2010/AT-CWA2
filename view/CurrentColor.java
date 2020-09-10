@@ -4,38 +4,36 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class ColorGrid extends JPanel implements MouseListener {
+public class CurrentColor extends JPanel implements MouseListener {
 
 	private DrawingPanel panel;
 
-	private int gridRows; 
-	private int gridCols; 
+	private int gridRows = 1; 
+	private int gridCols = 10; 
 	private Color[][] gridColor; 	                                
 	private Color lineColor;
 
 	private Color currentColor;
 
 
-	public ColorGrid(DrawingPanel panel, int rows, int cols, int preferredSquareSize) {
+	public CurrentColor(DrawingPanel panel, int preferredSquareSize) {
 		this.panel = panel;
-		gridRows = rows;
-		gridCols = cols;
 		gridColor = new Color[gridRows][gridCols];
 		lineColor = Color.BLACK;
-		setPreferredSize(new Dimension(preferredSquareSize*gridCols, 
-				preferredSquareSize*gridRows) );
-		generateColor();
+		setPreferredSize( new Dimension(preferredSquareSize*gridCols, 
+                preferredSquareSize*gridRows) );
+        for (int i = 0; i < gridCols; i++){
+            gridColor[0][i] = Color.white;
+        }
 		setBackground(Color.WHITE); 
 		addMouseListener(this);     
-	}
-
-	public void generateColor(){
-        for (int i = 0; i < gridRows; i++){
-			for (int j = 0; j < gridCols; j++){
-				gridColor[i][j] = new Color( (int)(225*Math.random()),
-				(int)(225*Math.random()),(int)(225*Math.random()) );
-			}
-		}
+    }
+    
+    public void addColor(Color color){
+        for (int i = gridCols-1; i > 1; i--){
+            gridColor[0][i] = gridColor[0][i-1];
+        }
+        gridColor[0][1] = color;
     }
 	
 	private int findRow(int pixelY) {
@@ -44,24 +42,20 @@ public class ColorGrid extends JPanel implements MouseListener {
 	
 	private int findColumn(int pixelX) {
 		return (int)(((double)pixelX)/getWidth()*gridCols);
-	}
+    }
 	
 	public void mousePressed(MouseEvent evt) {
 		int row, col;
-		row = findRow(evt.getY() );
-		col = findColumn(evt.getX() );
-
-		currentColor = gridColor[row][col];
-		//
+		row = findRow( evt.getY() );
+		col = findColumn( evt.getX() );
+        currentColor = gridColor[row][col];	
+        //
 		panel.getColorGroup().clearSelection();
-		//
-		panel.setColor(currentColor);
-		panel.getCanvas().setColor(currentColor);
+        //
+        panel.setColor(currentColor);
 		panel.getColorSetShow().setColor(currentColor);
-		panel.getCurrentColor().addColor(currentColor);
+        panel.getColorSetShow().repaint();
 		repaint();
-		panel.getColorSetShow().repaint();
-		panel.getCurrentColor().repaint();
 	}
 	
 	protected void paintComponent(Graphics g) {

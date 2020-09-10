@@ -11,7 +11,7 @@ public class Shape {
     public static final String POINT = "Point";
 
     private Coordinate[] pos = new Coordinate[2];
-    private Color color = Color.black;
+    private Color color;
     private String shape = "";
 
     public void setPos(int i, int x, int y){
