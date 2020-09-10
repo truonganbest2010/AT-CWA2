@@ -15,14 +15,14 @@ public class DrawingCanvas extends JPanel {
     private DrawingPanel panel;
     private Color color;
 
-    private Point startDrag;
-    private Point endDrag;
+    private Point mouseStart;
+    private Point mouseEnd;
 
     private ArrayList<Shape> shapeList = new ArrayList<>();
 
     public DrawingCanvas(DrawingPanel panel){
         this.panel = panel;
-        setPreferredSize(new Dimension(500, 500));
+        setPreferredSize(new Dimension(600, 600));
         setBackground(new ColorUIResource(235, 235, 235));
     }
 
@@ -32,20 +32,49 @@ public class DrawingCanvas extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        if (startDrag == null || endDrag == null){
+        if (mouseStart == null || mouseEnd == null){
             return;
         }
         else {
-            g2.setColor(color);
-            g2.drawLine(startDrag.x, startDrag.y, endDrag.x, endDrag.y);
-        } 
+            if (panel.getLineBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 600){
+                g2.setColor(color);
+                g2.drawLine(mouseStart.x, mouseStart.y, mouseEnd.x, mouseEnd.y); 
+            }
+            if (panel.getCircleBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 600){
+                int length;
+                if (mouseEnd.x-mouseStart.x > mouseEnd.y-mouseStart.y)
+                    length = mouseEnd.x-mouseStart.x;
+                else length = mouseEnd.y-mouseStart.y;
+
+                g2.setColor(color);
+                g2.drawOval(mouseStart.x, mouseStart.y, length, length);
+            }
+            
+            if (panel.getOvalBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 600){
+                g2.setColor(color);
+                g2.drawOval(mouseStart.x, mouseStart.y, mouseEnd.x-mouseStart.x, mouseEnd.y-mouseStart.y);
+            }
+            if (panel.getRectangleBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 600){
+                g2.setColor(color);
+                g2.drawRect(mouseStart.x, mouseStart.y, mouseEnd.x-mouseStart.x, mouseEnd.y-mouseStart.y);
+            }
+            if (panel.getSquareBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 600){
+                int length;
+                if (mouseEnd.x-mouseStart.x > mouseEnd.y-mouseStart.y)
+                    length = mouseEnd.x-mouseStart.x;
+                else length = mouseEnd.y-mouseStart.y;
+                
+                g2.setColor(color);
+                g2.drawRect(mouseStart.x, mouseStart.y, length, length);
+            }
         
 
-        if (!shapeList.isEmpty()){
-            for (Shape s: shapeList)
-                s.render(g2);     
-        }
 
+            if (!shapeList.isEmpty()){
+                for (Shape s: shapeList)
+                    s.render(g2);     
+            }
+        }
 
     }
 
@@ -59,14 +88,14 @@ public class DrawingCanvas extends JPanel {
 
 // Set point x1, y1. x2, y2
 
-    public Point setStartDrag(Point point){
-        startDrag = new Point(point);
-        return startDrag;
+    public Point setMouseStart(Point point){
+        mouseStart = new Point(point);
+        return mouseStart;
     }
 
-    public Point setEndDrag(Point point){
-        endDrag = new Point(point);
-        return endDrag;
+    public Point setMouseEnd(Point point){
+        mouseEnd = new Point(point);
+        return mouseEnd;
     }
 
 

@@ -40,6 +40,7 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
         } else if (source == panel.getClearBtn()){
             panel.getCanvas().getShapeList().clear();
             panel.getCanvas().repaint();
+
         } // color
 
 
@@ -50,6 +51,8 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
         } else if (source == panel.getBlueBtn()){
             color = Color.blue;
         }
+
+
     }
 
     @Override
@@ -65,16 +68,58 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
     public void mousePressed(MouseEvent e) {
         // TODO Auto-generated method stub
         msg = "Mouse: Pressing...";
+        startPoint = e.getPoint();
         if (panel.getLineBtn().isSelected()){  
-            startPoint = e.getPoint();
             shape = new Shape();
             shape.setPos(0, e.getX(), e.getY());
             shape.setColor(color);
+            shape.setShape("Line");
             panel.getCanvas().getShapeList().add(shape);
-            panel.getCanvas().setStartDrag(startPoint);
+            panel.getCanvas().setMouseStart(startPoint);
             panel.getCanvas().setColor(color);
-        
         }
+        if (panel.getCircleBtn().isSelected()){  
+            // startPoint = e.getPoint();
+            shape = new Shape();
+            shape.setPos(0, e.getX(), e.getY());
+            shape.setColor(color);
+            shape.setShape("Circle");
+            panel.getCanvas().getShapeList().add(shape);
+            panel.getCanvas().setMouseStart(startPoint);
+            panel.getCanvas().setColor(color);
+        }
+        if (panel.getOvalBtn().isSelected()){  
+            // startPoint = e.getPoint();
+            shape = new Shape();
+            shape.setPos(0, e.getX(), e.getY());
+            shape.setColor(color);
+            shape.setShape("Oval");
+            panel.getCanvas().getShapeList().add(shape);
+            panel.getCanvas().setMouseStart(startPoint);
+            panel.getCanvas().setColor(color);
+        }
+        if (panel.getRectangleBtn().isSelected()){  
+            // startPoint = e.getPoint();
+            shape = new Shape();
+            shape.setPos(0, e.getX(), e.getY());
+            shape.setColor(color);
+            shape.setShape("Rectangle");
+            panel.getCanvas().getShapeList().add(shape);
+            panel.getCanvas().setMouseStart(startPoint);
+            panel.getCanvas().setColor(color);
+        }
+        if (panel.getSquareBtn().isSelected()){  
+            // startPoint = e.getPoint();
+            shape = new Shape();
+            shape.setPos(0, e.getX(), e.getY());
+            shape.setColor(color);
+            shape.setShape("Square");
+            panel.getCanvas().getShapeList().add(shape);
+            panel.getCanvas().setMouseStart(startPoint);
+            panel.getCanvas().setColor(color);
+        }
+
+
         panel.getCanvas().repaint();
 
         panel.setXYStatuslbl().setText(String.valueOf(e.getX()) + " x " + String.valueOf(e.getY()));
@@ -85,12 +130,17 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
     public void mouseReleased(MouseEvent e) {
         // TODO Auto-generated method stub
         msg = "Mouse: Releasing...";
-        if (panel.getLineBtn().isSelected()){
+        if (panel.getLineBtn().isSelected()
+        || panel.getCircleBtn().isSelected() 
+        || panel.getOvalBtn().isSelected() 
+        || panel.getRectangleBtn().isSelected() 
+        || panel.getSquareBtn().isSelected()
+        ){
             shape.setPos(1, e.getX(), e.getY());
-            panel.getCanvas().setStartDrag(startPoint);
+            panel.getCanvas().setMouseStart(startPoint);
         }
+        
         panel.getCanvas().repaint();
-
         panel.setXYStatuslbl().setText(String.valueOf(e.getX()) + " x " + String.valueOf(e.getY()));
         panel.setMouseStatuslbl().setText("  " + msg);
     }
@@ -104,7 +154,9 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
     @Override
     public void mouseExited(MouseEvent e) {
         // TODO Auto-generated method stub
-
+        // System.out.println("Exited: " + e.getX() + ", " + e.getY());
+        panel.getCanvas().setMouseStart(e.getPoint());
+        panel.getCanvas().setMouseEnd(e.getPoint());
     }
 
 
@@ -112,11 +164,16 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
     public void mouseDragged(MouseEvent e) {
         // TODO Auto-generated method stub
         msg = "Mouse: Dragging...";
-        if (panel.getLineBtn().isSelected()){
-            panel.getCanvas().setEndDrag(e.getPoint());
-            }
+        if (panel.getLineBtn().isSelected()
+        || panel.getCircleBtn().isSelected() 
+        || panel.getOvalBtn().isSelected() 
+        || panel.getRectangleBtn().isSelected() 
+        || panel.getSquareBtn().isSelected()
+        ){
+            panel.getCanvas().setMouseEnd(e.getPoint());
+        }
+        
         panel.getCanvas().repaint();
-
         if (e.getX() > -1 && e.getY() > -1)
             panel.setXYStatuslbl().setText(String.valueOf(e.getX()) + " x " + String.valueOf(e.getY()));
         panel.setMouseStatuslbl().setText("  " + msg);
@@ -126,8 +183,8 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
     public void mouseMoved(MouseEvent e) {
         // TODO Auto-generated method stub
         msg = "Mouse: ...";
-        panel.getCanvas().setStartDrag(e.getPoint());
-        panel.getCanvas().setEndDrag(e.getPoint());
+        panel.getCanvas().setMouseStart(e.getPoint());
+        panel.getCanvas().setMouseEnd(e.getPoint());
         
         panel.setXYStatuslbl().setText(String.valueOf(e.getX()) + " x " + String.valueOf(e.getY()));
         panel.setMouseStatuslbl().setText("  " + msg);

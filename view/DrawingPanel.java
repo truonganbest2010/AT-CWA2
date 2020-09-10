@@ -11,7 +11,7 @@ public class DrawingPanel {
     private JFrame window;
     private DrawingCanvas canvas;
     private JRadioButton blueBtn, redBtn, greenBtn;
-    private JRadioButton lineBtn, ovalBtn, circleBtn, rectangleBtn;
+    private JRadioButton lineBtn, ovalBtn, circleBtn, rectangleBtn, squareBtn;
     private JButton clearBtn, exitBtn;
 
     private JLabel XYStatus = new JLabel();
@@ -54,11 +54,13 @@ public class DrawingPanel {
             ovalBtn = new JRadioButton("Oval");
             circleBtn = new JRadioButton("Circle");
             rectangleBtn = new JRadioButton("Rectangle");
+            squareBtn = new JRadioButton("Square");
             ButtonGroup shapeBtnGroup = new ButtonGroup();
             shapeBtnGroup.add(lineBtn);
             shapeBtnGroup.add(ovalBtn);
             shapeBtnGroup.add(circleBtn);
             shapeBtnGroup.add(rectangleBtn);
+            shapeBtnGroup.add(squareBtn);
 
             JPanel shapePanel = new JPanel();
             TitledBorder shapeBoxTitle = BorderFactory.createTitledBorder("Shape Options");
@@ -68,6 +70,7 @@ public class DrawingPanel {
             shapePanel.add(ovalBtn);
             shapePanel.add(circleBtn);
             shapePanel.add(rectangleBtn);
+            shapePanel.add(squareBtn);
             
             rightPanel.add(shapePanel);
 
@@ -117,6 +120,7 @@ public class DrawingPanel {
             ovalBtn.addActionListener(eventListener);
             circleBtn.addActionListener(eventListener);
             rectangleBtn.addActionListener(eventListener);
+            squareBtn.addActionListener(eventListener);
             
             // control
             clearBtn.addActionListener(eventListener);
@@ -162,6 +166,10 @@ public class DrawingPanel {
 
     public JRadioButton getRectangleBtn(){
         return rectangleBtn;
+    }
+
+    public JRadioButton getSquareBtn(){
+        return squareBtn;
     }
 
     public JButton getClearBtn(){
