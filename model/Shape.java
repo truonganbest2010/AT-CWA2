@@ -8,6 +8,7 @@ public class Shape {
     public static final String OVAL = "Oval";
     public static final String RECTANGLE = "Rectangle";
     public static final String SQUARE = "Square";
+    public static final String POINT = "Point";
 
     private Coordinate[] pos = new Coordinate[2];
     private Color color = Color.black;
@@ -69,7 +70,10 @@ public class Shape {
                  // draw square
                 graphics2d.drawRect(pos[0].getX(), pos[0].getY(), length, length);
             } else return;
-        
+        } else if (shape == POINT){
+            graphics2d.fillOval(pos[0].getX(), pos[0].getY(), 2, 2);
         }
+
+
     }
 }

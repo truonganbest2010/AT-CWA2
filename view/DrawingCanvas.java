@@ -23,7 +23,7 @@ public class DrawingCanvas extends JPanel {
     public DrawingCanvas(DrawingPanel panel){
         this.panel = panel;
         setPreferredSize(new Dimension(600, 600));
-        setBackground(new ColorUIResource(235, 235, 235));
+        setBackground(new ColorUIResource(240, 240, 240));
     }
 
     @Override
@@ -36,6 +36,10 @@ public class DrawingCanvas extends JPanel {
             return;
         }
         else {
+            if (panel.getLineBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 600){
+                g2.setColor(color);
+                g2.fillOval(mouseEnd.x, mouseEnd.y, 2, 2); 
+            }
             if (panel.getLineBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 600){
                 g2.setColor(color);
                 g2.drawLine(mouseStart.x, mouseStart.y, mouseEnd.x, mouseEnd.y); 
@@ -68,8 +72,6 @@ public class DrawingCanvas extends JPanel {
                 g2.drawRect(mouseStart.x, mouseStart.y, length, length);
             }
         
-
-
             if (!shapeList.isEmpty()){
                 for (Shape s: shapeList)
                     s.render(g2);     

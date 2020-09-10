@@ -11,9 +11,11 @@ public class DrawingPanel {
     private JFrame window;
     private DrawingCanvas canvas;
     private ColorGrid colorGrid;
-    private JRadioButton blueBtn, redBtn, greenBtn;
-    private JRadioButton lineBtn, ovalBtn, circleBtn, rectangleBtn, squareBtn;
+
+    private JRadioButton redBtn, greenBtn, blueBtn, yellowBtn, blackBtn;
+    private JRadioButton pencilBtn, lineBtn, ovalBtn, circleBtn, rectangleBtn, squareBtn;
     private JButton clearBtn, exitBtn;
+    private Color color;
 
     private JLabel XYStatus = new JLabel();
     private JLabel mouseStatus = new JLabel();
@@ -32,31 +34,43 @@ public class DrawingPanel {
             rightPanel.setLayout(new GridLayout(3, 1)); // 3 row 1 col
 
             /* Colors */
-            blueBtn = new JRadioButton("Blue");
-            redBtn = new JRadioButton("Red");
-            greenBtn = new JRadioButton("Green");
+            blueBtn = new JRadioButton("B");
+            redBtn = new JRadioButton("R");
+            greenBtn = new JRadioButton("G");
+            yellowBtn = new JRadioButton("Y");
+            blackBtn = new JRadioButton("Default");
+                blackBtn.setSelected(true);
             ButtonGroup colorGroup = new ButtonGroup(); // group color buttons
-            colorGroup.add(blueBtn);
             colorGroup.add(redBtn);
             colorGroup.add(greenBtn);
+            colorGroup.add(blueBtn);
+            colorGroup.add(yellowBtn);
+            colorGroup.add(blackBtn);
+            
 
             JPanel colorPanel = new JPanel();
-            TitledBorder colorBoxTitle = BorderFactory.createTitledBorder("Color Box");
+            colorPanel.setLayout(new GridLayout(5,1));
+            TitledBorder colorBoxTitle = BorderFactory.createTitledBorder("Main Color");
             colorPanel.setBorder(colorBoxTitle);
             colorPanel.setBackground(Color.lightGray);
-            colorPanel.add(blueBtn);
             colorPanel.add(redBtn);
             colorPanel.add(greenBtn);
+            colorPanel.add(blueBtn);
+            colorPanel.add(yellowBtn);
+            colorPanel.add(blackBtn);
             
             rightPanel.add(colorPanel);
 
             /* Shape Options */
+            pencilBtn = new JRadioButton("Pencil");
+                pencilBtn.setSelected(true);
             lineBtn = new JRadioButton("Line");
             ovalBtn = new JRadioButton("Oval");
             circleBtn = new JRadioButton("Circle");
             rectangleBtn = new JRadioButton("Rectangle");
             squareBtn = new JRadioButton("Square");
             ButtonGroup shapeBtnGroup = new ButtonGroup();
+            shapeBtnGroup.add(pencilBtn);
             shapeBtnGroup.add(lineBtn);
             shapeBtnGroup.add(ovalBtn);
             shapeBtnGroup.add(circleBtn);
@@ -64,9 +78,11 @@ public class DrawingPanel {
             shapeBtnGroup.add(squareBtn);
 
             JPanel shapePanel = new JPanel();
+            shapePanel.setLayout(new GridLayout(5,1));
             TitledBorder shapeBoxTitle = BorderFactory.createTitledBorder("Shape Options");
             shapePanel.setBorder(shapeBoxTitle);
             shapePanel.setBackground(Color.LIGHT_GRAY);
+            shapePanel.add(pencilBtn);
             shapePanel.add(lineBtn);
             shapePanel.add(ovalBtn);
             shapePanel.add(circleBtn);
@@ -102,11 +118,15 @@ public class DrawingPanel {
 
                 /* Color Grid */
 
-        colorGrid = new ColorGrid(20, 20, 10);
+        colorGrid = new ColorGrid(this,20, 10, 10);
         JPanel colorGridPanel = new JPanel();
+        colorGridPanel.setLayout(new GridLayout(2,1));
         TitledBorder colorGridTitle = BorderFactory.createTitledBorder("Color Generator");
         colorGridPanel.setBorder(colorGridTitle);
         colorGridPanel.setBackground(Color.LIGHT_GRAY);
+        
+                /* Current Color */
+
         colorGridPanel.add(colorGrid);
         container.add(BorderLayout.WEST, colorGridPanel);
 
@@ -129,8 +149,11 @@ public class DrawingPanel {
             blueBtn.addActionListener(eventListener);
             redBtn.addActionListener(eventListener);
             greenBtn.addActionListener(eventListener);
+            yellowBtn.addActionListener(eventListener);
+            blackBtn.addActionListener(eventListener);
 
             // shape
+            pencilBtn.addActionListener(eventListener);
             lineBtn.addActionListener(eventListener);
             ovalBtn.addActionListener(eventListener);
             circleBtn.addActionListener(eventListener);
@@ -155,10 +178,19 @@ public class DrawingPanel {
         return canvas;
     }
 
-    public JRadioButton getBlueBtn(){
-        return blueBtn;
+    public ColorGrid getColorGrid(){
+        return colorGrid;
     }
 
+    public Color setColor(Color color){
+        return this.color = color;
+    }
+
+    public Color getColor(){
+        return color;
+    }
+
+    // Color Getters
     public JRadioButton getRedBtn(){
         return redBtn;
     }
@@ -167,10 +199,28 @@ public class DrawingPanel {
         return greenBtn;
     }
 
+    public JRadioButton getBlueBtn(){
+        return blueBtn;
+    }
+
+    public JRadioButton getYellowBtn(){
+        return yellowBtn;
+    }
+
+    public JRadioButton getBlackBtn(){
+        return blackBtn;
+    }
+
+
+    // Shape Getters
+    public JRadioButton getPencilBtn(){
+        return pencilBtn;
+    }
+
     public JRadioButton getLineBtn(){
         return lineBtn;
     }
-
+    
     public JRadioButton getOvalBtn(){
         return ovalBtn;
     }
@@ -187,6 +237,7 @@ public class DrawingPanel {
         return squareBtn;
     }
 
+    // Control Getters
     public JButton getClearBtn(){
         return clearBtn;
     }
@@ -195,6 +246,7 @@ public class DrawingPanel {
         return exitBtn;
     }
 
+    // Label Getters
     public JLabel setXYStatuslbl(){
         return XYStatus;
     }

@@ -3,11 +3,8 @@ package controller;
 import java.awt.*;
 import java.awt.event.*;
 
-import javax.swing.JFrame;
-
 import model.Shape;
 import view.DrawingPanel;
-import view.MenuScreen;
 
 public class DrawingEventListener implements ActionListener, MouseListener, MouseMotionListener {
 
@@ -17,7 +14,6 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
     private Point startPoint = new Point();
     private Point endPoint = new Point();
 
-    private Color color = Color.black;
     private String msg = "";
 
     public DrawingEventListener(DrawingPanel panel){
@@ -30,12 +26,6 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
 
         Object source = e.getSource();
         if (source == panel.getExitBtn()){ // control
-            JFrame window = panel.getWindow();
-            window.getContentPane().removeAll();
-            var menu = new MenuScreen(window);
-            menu.init();
-            window.pack();
-            window.revalidate();
         
         } else if (source == panel.getClearBtn()){
             panel.getCanvas().getShapeList().clear();
@@ -45,11 +35,15 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
 
 
         else if (source == panel.getRedBtn()){
-            color = Color.red;
+            panel.setColor(Color.red);
         } else if (source == panel.getGreenBtn()){
-            color = Color.green;
+            panel.setColor(Color.green);
         } else if (source == panel.getBlueBtn()){
-            color = Color.blue;
+            panel.setColor(Color.blue);
+        } else if (source == panel.getYellowBtn()){
+            panel.setColor(Color.yellow);
+        } else if (source == panel.getBlackBtn()){
+            panel.setColor(Color.black);
         }
 
 
@@ -69,54 +63,61 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
         // TODO Auto-generated method stub
         msg = "Mouse: Pressing...";
         startPoint = e.getPoint();
+        if (panel.getPencilBtn().isSelected()){
+            shape = new Shape();
+            shape.setPos(0, e.getX(), e.getY());
+            shape.setColor(panel.getColor());
+            shape.setShape("Point");
+            panel.getCanvas().getShapeList().add(shape);
+        }
         if (panel.getLineBtn().isSelected()){  
             shape = new Shape();
             shape.setPos(0, e.getX(), e.getY());
-            shape.setColor(color);
+            shape.setColor(panel.getColor());
             shape.setShape("Line");
             panel.getCanvas().getShapeList().add(shape);
             panel.getCanvas().setMouseStart(startPoint);
-            panel.getCanvas().setColor(color);
+            panel.getCanvas().setColor(panel.getColor());
         }
         if (panel.getCircleBtn().isSelected()){  
             // startPoint = e.getPoint();
             shape = new Shape();
             shape.setPos(0, e.getX(), e.getY());
-            shape.setColor(color);
+            shape.setColor(panel.getColor());
             shape.setShape("Circle");
             panel.getCanvas().getShapeList().add(shape);
             panel.getCanvas().setMouseStart(startPoint);
-            panel.getCanvas().setColor(color);
+            panel.getCanvas().setColor(panel.getColor());
         }
         if (panel.getOvalBtn().isSelected()){  
             // startPoint = e.getPoint();
             shape = new Shape();
             shape.setPos(0, e.getX(), e.getY());
-            shape.setColor(color);
+            shape.setColor(panel.getColor());
             shape.setShape("Oval");
             panel.getCanvas().getShapeList().add(shape);
             panel.getCanvas().setMouseStart(startPoint);
-            panel.getCanvas().setColor(color);
+            panel.getCanvas().setColor(panel.getColor());
         }
         if (panel.getRectangleBtn().isSelected()){  
             // startPoint = e.getPoint();
             shape = new Shape();
             shape.setPos(0, e.getX(), e.getY());
-            shape.setColor(color);
+            shape.setColor(panel.getColor());
             shape.setShape("Rectangle");
             panel.getCanvas().getShapeList().add(shape);
             panel.getCanvas().setMouseStart(startPoint);
-            panel.getCanvas().setColor(color);
+            panel.getCanvas().setColor(panel.getColor());
         }
         if (panel.getSquareBtn().isSelected()){  
             // startPoint = e.getPoint();
             shape = new Shape();
             shape.setPos(0, e.getX(), e.getY());
-            shape.setColor(color);
+            shape.setColor(panel.getColor());
             shape.setShape("Square");
             panel.getCanvas().getShapeList().add(shape);
             panel.getCanvas().setMouseStart(startPoint);
-            panel.getCanvas().setColor(color);
+            panel.getCanvas().setColor(panel.getColor());
         }
 
 
@@ -169,8 +170,16 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
         || panel.getOvalBtn().isSelected() 
         || panel.getRectangleBtn().isSelected() 
         || panel.getSquareBtn().isSelected()
+        || panel.getPencilBtn().isSelected()
         ){
             panel.getCanvas().setMouseEnd(e.getPoint());
+        }
+        if (panel.getPencilBtn().isSelected()){
+            shape = new Shape();
+            shape.setPos(0, e.getX(), e.getY());
+            shape.setColor(panel.getColor());
+            shape.setShape("Point");
+            panel.getCanvas().getShapeList().add(shape);
         }
         
         panel.getCanvas().repaint();

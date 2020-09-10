@@ -4,28 +4,28 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-/**
- * This class represents a "panel" that displays a grid of colored squares.
- * The class also include a main() routine that creates a window containing
- * a panel of this type.
- */
 public class ColorGrid extends JPanel implements MouseListener {
 
-	private int gridRows; // Number of rows of squares.
-	private int gridCols; // Number of columns of squares.
-	private Color[][] gridColor; /* gridColor[r][c] is the color for square in row r, column c; 
-	                                 if it  is null, the square has the panel's background color.*/
-	private Color lineColor; // Color for lines drawn between squares; if null, no lines are drawn.
+	private DrawingPanel panel;
 
-	public ColorGrid(int rows, int columns, int preferredSquareSize) {
-		gridColor = new Color[rows][columns]; // Create the array that stores square colors.
+	private int gridRows; 
+	private int gridCols; 
+	private Color[][] gridColor; 	                                
+	private Color lineColor;
+
+	private Color currentColor;
+
+
+	public ColorGrid(DrawingPanel panel, int rows, int columns, int preferredSquareSize) {
+		this.panel = panel;
+		gridColor = new Color[rows][columns]; 
 		gridRows = rows;
 		gridCols = columns;
 		lineColor = Color.BLACK;
 		setPreferredSize( new Dimension(preferredSquareSize*columns, 
 				preferredSquareSize*rows) );
-		setBackground(Color.WHITE); // Set the background color for this panel.
-		addMouseListener(this);     // Mouse actions will call methods in this object.
+		setBackground(Color.WHITE); 
+		addMouseListener(this);     
 	}
 	
 	private int findRow(int pixelY) {
@@ -37,12 +37,19 @@ public class ColorGrid extends JPanel implements MouseListener {
 	}
 	
 	public void mousePressed(MouseEvent evt) {
-		int row, col; // the row and column in the grid of squares where the user clicked.
+		int row, col;
 		row = findRow( evt.getY() );
 		col = findColumn( evt.getX() );
 		gridColor[row][col] = new Color( (int)(225*Math.random()),
 				(int)(225*Math.random()),(int)(225*Math.random()) );
-		repaint(); // Causes the panel to be redrawn, by calling the paintComponent method.
+		currentColor = gridColor[row][col];	
+		panel.getRedBtn().setSelected(false);
+		panel.getGreenBtn().setSelected(false);
+		panel.getBlueBtn().setSelected(false);
+		panel.getYellowBtn().setSelected(false);
+		panel.getBlackBtn().setSelected(false);
+		panel.setColor(currentColor);
+		repaint();
 	}
 	
 	protected void paintComponent(Graphics g) {

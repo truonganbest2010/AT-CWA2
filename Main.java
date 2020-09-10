@@ -1,6 +1,6 @@
 import javax.swing.JFrame;
 
-import view.MenuScreen;
+import view.DrawingPanel;
 
 public class Main {
 
@@ -10,8 +10,8 @@ public class Main {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocation(400, 100);
 
-        var menu = new MenuScreen(window);
-        menu.init();
+        var panel = new DrawingPanel(window);;
+        panel.init();
 
         window.pack();
         window.setVisible(true);
