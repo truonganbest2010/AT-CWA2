@@ -10,6 +10,7 @@ public class DrawingPanel {
 
     private JFrame window;
     private DrawingCanvas canvas;
+    private ColorGrid colorGrid;
     private JRadioButton blueBtn, redBtn, greenBtn;
     private JRadioButton lineBtn, ovalBtn, circleBtn, rectangleBtn, squareBtn;
     private JButton clearBtn, exitBtn;
@@ -25,12 +26,12 @@ public class DrawingPanel {
         Container container = window.getContentPane();
         window.setTitle("Drawing Simulator");
 
-        // RIGHT
+        /* RIGHT */
             JPanel rightPanel = new JPanel();
             container.add(BorderLayout.EAST, rightPanel);
             rightPanel.setLayout(new GridLayout(3, 1)); // 3 row 1 col
 
-            // Colors
+            /* Colors */
             blueBtn = new JRadioButton("Blue");
             redBtn = new JRadioButton("Red");
             greenBtn = new JRadioButton("Green");
@@ -49,7 +50,7 @@ public class DrawingPanel {
             
             rightPanel.add(colorPanel);
 
-            // Shape Options
+            /* Shape Options */
             lineBtn = new JRadioButton("Line");
             ovalBtn = new JRadioButton("Oval");
             circleBtn = new JRadioButton("Circle");
@@ -75,7 +76,7 @@ public class DrawingPanel {
             rightPanel.add(shapePanel);
 
 
-            // Control Buttons
+            /* Control Buttons */
             clearBtn = new JButton("Clear");
             exitBtn = new JButton("Exit");
 
@@ -86,16 +87,30 @@ public class DrawingPanel {
             controlPanel.add(exitBtn);
             rightPanel.add(controlPanel);
 
-        // LEFT
+        /* CENTER */
 
-        // Canvas
+                /* Canvas */
         canvas = new DrawingCanvas(this);
         JPanel canvasPanel = new JPanel();
         TitledBorder canvasTitle = BorderFactory.createTitledBorder("Drawing Here");
         canvasPanel.setBorder(canvasTitle);
         canvasPanel.setBackground(Color.LIGHT_GRAY);
         canvasPanel.add(canvas);
-        container.add(BorderLayout.WEST, canvasPanel);
+        container.add(BorderLayout.CENTER, canvasPanel);
+
+        /* WEST */
+
+                /* Color Grid */
+
+        colorGrid = new ColorGrid(20, 20, 10);
+        JPanel colorGridPanel = new JPanel();
+        TitledBorder colorGridTitle = BorderFactory.createTitledBorder("Color Generator");
+        colorGridPanel.setBorder(colorGridTitle);
+        colorGridPanel.setBackground(Color.LIGHT_GRAY);
+        colorGridPanel.add(colorGrid);
+        container.add(BorderLayout.WEST, colorGridPanel);
+
+
 
         // SOUTH
         JPanel southPanel = new JPanel();
