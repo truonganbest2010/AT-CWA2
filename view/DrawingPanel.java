@@ -21,7 +21,7 @@ public class DrawingPanel {
     private JRadioButton redBtn, greenBtn, blueBtn, yellowBtn, blackBtn;
     private JRadioButton pencilBtn, lineBtn, ovalBtn, circleBtn, rectangleBtn, squareBtn;
     private JRadioButton noneBtn, fillBtn, transparentBtn;
-    private JButton clearBtn, exitBtn, generateBtn;
+    private JButton clearBtn, undoBtn, redoBtn, exitBtn, generateBtn;
     private ButtonGroup fillGroup;
     private Color color = Color.black;
 
@@ -130,14 +130,28 @@ public class DrawingPanel {
         rightPanel.add(shapePanel);
 
             /* Control Buttons */
+            undoBtn = new JButton("Undo");
+            redoBtn = new JButton("Redo");
             clearBtn = new JButton("Clear");
             exitBtn = new JButton("Exit");
 
             JPanel controlPanel = new JPanel();
+            controlPanel.setLayout(new GridLayout(2,1));
             TitledBorder controlBoxTitle = BorderFactory.createTitledBorder("Control Box");
             controlPanel.setBorder(controlBoxTitle);
-            controlPanel.add(clearBtn);
-            controlPanel.add(exitBtn);
+                JPanel toolPanel = new JPanel();
+                toolPanel.setLayout(new GridLayout(1,3));
+                toolPanel.add(undoBtn);
+                    undoBtn.setEnabled(false);
+                toolPanel.add(redoBtn);
+                    redoBtn.setEnabled(false);
+                toolPanel.add(clearBtn);
+            controlPanel.add(toolPanel);
+
+                JPanel exitPanel = new JPanel();
+                exitPanel.setLayout(new GridLayout(1,1));
+                exitPanel.add(exitBtn);
+            controlPanel.add(exitPanel);
 
         rightPanel.add(controlPanel);
 
@@ -220,6 +234,8 @@ public class DrawingPanel {
 
             // control
             generateBtn.addActionListener(eventListener);
+            undoBtn.addActionListener(eventListener);
+            redoBtn.addActionListener(eventListener);
             clearBtn.addActionListener(eventListener);
             exitBtn.addActionListener(eventListener);
 
@@ -328,6 +344,14 @@ public class DrawingPanel {
     // Control Getters
     public JButton getGenerateBtn(){
         return generateBtn;
+    }
+
+    public JButton getUndoBtn(){
+        return undoBtn;
+    }
+
+    public JButton getRedoBtn(){
+        return redoBtn;
     }
 
     public JButton getClearBtn(){

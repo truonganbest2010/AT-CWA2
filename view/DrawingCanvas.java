@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
@@ -18,7 +19,8 @@ public class DrawingCanvas extends JPanel {
     private Point mouseStart;
     private Point mouseEnd;
 
-    private ArrayList<Shape> shapeList = new ArrayList<>();
+    private Stack<Shape> shapeList = new Stack<>();
+    private Stack<Shape> redoList = new Stack<>();
 
     public DrawingCanvas(DrawingPanel panel){
         this.panel = panel;
@@ -79,8 +81,45 @@ public class DrawingCanvas extends JPanel {
 
     }
 
-    public ArrayList<Shape> getShapeList(){
+    public Stack<Shape> getShapeList(){
         return shapeList;
+    }
+
+    public Stack<Shape> getRedoList(){
+        return redoList;
+    }
+
+    public void getUndo(){
+        if (shapeList.size() > 6){
+            if (shapeList.get(shapeList.size()-1).getShape() == "Point"){
+                int i = 0;
+                while (i<5) {
+                    redoList.push(shapeList.pop());
+                    i++;
+                }
+            } else {
+                redoList.push(shapeList.pop());
+            }
+        } else if (!shapeList.isEmpty() || shapeList.size() <= 6){
+            redoList.push(shapeList.pop());
+        }
+    }
+
+    public void getRedo(){
+        if (redoList.size() > 6){
+            if (redoList.get(redoList.size()-1).getShape() == "Point"){
+                int i = 0;
+                while (i<5) {
+                    shapeList.push(redoList.pop());
+                    i++;
+                }
+            } else {
+                shapeList.push(redoList.pop());
+            }
+        } else if (!redoList.isEmpty() || redoList.size() <= 6){
+            shapeList.push(redoList.pop());
+        }
+    
     }
 
     public Color setColor(Color color){

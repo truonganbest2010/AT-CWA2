@@ -37,6 +37,10 @@ public class Shape {
         return color;
     }
 
+    public String getShape(){
+        return shape;
+    }
+
     
 
     public void render(Graphics2D graphics2d){
