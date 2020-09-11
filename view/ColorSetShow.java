@@ -22,6 +22,10 @@ public class ColorSetShow extends JPanel{
     public Color setColor(Color color){
         return gridColor[0][0] = color;
     }
+
+    public Color getColor(){
+        return gridColor[0][0];
+    }
 	
 	protected void paintComponent(Graphics g) {
 		g.setColor(getBackground());

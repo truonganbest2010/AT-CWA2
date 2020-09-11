@@ -13,7 +13,7 @@ import java.awt.*;
 public class DrawingCanvas extends JPanel {
     
     private DrawingPanel panel;
-    private Color color;
+    private Color color = Color.black;
 
     private Point mouseStart;
     private Point mouseEnd;
@@ -36,40 +36,39 @@ public class DrawingCanvas extends JPanel {
             return;
         }
         else {
-            if (panel.getPencilBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 740){
-                g2.setColor(color);
+            g2.setColor(color);
+
+            if (panel.getPencilBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 740){ // point
+                
                 g2.fillOval(mouseEnd.x, mouseEnd.y, 2, 2); 
             }
-            if (panel.getLineBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 740){
-                g2.setColor(color);
+            if (panel.getLineBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 740){ // line drag
                 g2.drawLine(mouseStart.x, mouseStart.y, mouseEnd.x, mouseEnd.y); 
             }
-            if (panel.getCircleBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 740){
-                int length;
-                if (mouseEnd.x-mouseStart.x > mouseEnd.y-mouseStart.y)
-                    length = mouseEnd.x-mouseStart.x;
-                else length = mouseEnd.y-mouseStart.y;
 
-                g2.setColor(color);
-                g2.drawOval(mouseStart.x, mouseStart.y, length, length);
+            if (panel.getCircleBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 740){ // circle drag
+                int length;
+                    if (mouseEnd.x-mouseStart.x > mouseEnd.y-mouseStart.y)
+                        length = mouseEnd.x-mouseStart.x;
+                    else length = mouseEnd.y-mouseStart.y;
+                
+                    g2.drawOval(mouseStart.x, mouseStart.y, length, length);
             }
             
-            if (panel.getOvalBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 740){
-                g2.setColor(color);
-                g2.drawOval(mouseStart.x, mouseStart.y, mouseEnd.x-mouseStart.x, mouseEnd.y-mouseStart.y);
+            if (panel.getOvalBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 740){ // oval drag
+                    g2.drawOval(mouseStart.x, mouseStart.y, mouseEnd.x-mouseStart.x, mouseEnd.y-mouseStart.y);
             }
-            if (panel.getRectangleBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 740){
-                g2.setColor(color);
-                g2.drawRect(mouseStart.x, mouseStart.y, mouseEnd.x-mouseStart.x, mouseEnd.y-mouseStart.y);
+
+            if (panel.getRectangleBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 740){ // rectangle drag
+                    g2.drawRect(mouseStart.x, mouseStart.y, mouseEnd.x-mouseStart.x, mouseEnd.y-mouseStart.y);
             }
-            if (panel.getSquareBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 740){
+
+            if (panel.getSquareBtn().isSelected() && mouseStart.x < 600 && mouseStart.y < 740){ // square drag
                 int length;
-                if (mouseEnd.x-mouseStart.x > mouseEnd.y-mouseStart.y)
-                    length = mouseEnd.x-mouseStart.x;
-                else length = mouseEnd.y-mouseStart.y;
-                
-                g2.setColor(color);
-                g2.drawRect(mouseStart.x, mouseStart.y, length, length);
+                    if (mouseEnd.x-mouseStart.x > mouseEnd.y-mouseStart.y)
+                        length = mouseEnd.x-mouseStart.x;
+                    else length = mouseEnd.y-mouseStart.y;
+                    g2.drawRect(mouseStart.x, mouseStart.y, length, length);
             }
         
             if (!shapeList.isEmpty()){

@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.*;
+import java.net.http.WebSocket.Listener;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
@@ -18,8 +20,10 @@ public class DrawingPanel {
     private ButtonGroup colorGroup = new ButtonGroup();
     private JRadioButton redBtn, greenBtn, blueBtn, yellowBtn, blackBtn;
     private JRadioButton pencilBtn, lineBtn, ovalBtn, circleBtn, rectangleBtn, squareBtn;
-    private JButton clearBtn, exitBtn;
-    private Color color;
+    private JRadioButton noneBtn, fillBtn, transparentBtn;
+    private JButton clearBtn, exitBtn, generateBtn;
+    private ButtonGroup fillGroup;
+    private Color color = Color.black;
 
     private JLabel XYStatus = new JLabel();
     private JLabel mouseStatus = new JLabel();
@@ -42,7 +46,7 @@ public class DrawingPanel {
             redBtn = new JRadioButton("R");
             greenBtn = new JRadioButton("G");
             yellowBtn = new JRadioButton("Y");
-            blackBtn = new JRadioButton("Default");
+            blackBtn = new JRadioButton("Default (Black)");
                 blackBtn.setSelected(true);
             // group color buttons
             colorGroup.add(redBtn);
@@ -53,7 +57,7 @@ public class DrawingPanel {
             
             /* Color Panel */
             JPanel colorPanel = new JPanel();
-            colorPanel.setLayout(new GridLayout(5,1));
+            colorPanel.setLayout(new GridLayout(2,1));
             TitledBorder colorBoxTitle = BorderFactory.createTitledBorder("Main Color");
             colorPanel.setBorder(colorBoxTitle);
             colorPanel.setBackground(Color.lightGray);
@@ -90,16 +94,39 @@ public class DrawingPanel {
             shapeBtnGroup.add(squareBtn);
 
             JPanel shapePanel = new JPanel();
-            shapePanel.setLayout(new GridLayout(5,1));
+            shapePanel.setLayout(new GridLayout(2,1));
             TitledBorder shapeBoxTitle = BorderFactory.createTitledBorder("Shape Options");
             shapePanel.setBorder(shapeBoxTitle);
             shapePanel.setBackground(Color.LIGHT_GRAY);
-            shapePanel.add(pencilBtn);
-            shapePanel.add(lineBtn);
-            shapePanel.add(ovalBtn);
-            shapePanel.add(circleBtn);
-            shapePanel.add(rectangleBtn);
-            shapePanel.add(squareBtn);        
+                JPanel sPanel = new JPanel();
+                sPanel.setLayout(new GridLayout(2,1));
+                sPanel.setBackground(Color.LIGHT_GRAY);
+                sPanel.add(pencilBtn);
+                sPanel.add(lineBtn);
+                sPanel.add(ovalBtn);
+                sPanel.add(circleBtn);
+                sPanel.add(rectangleBtn);
+                sPanel.add(squareBtn);
+            shapePanel.add(sPanel);
+                JPanel fillPanel = new JPanel();
+                fillPanel.setLayout(new GridLayout(1,2));
+                TitledBorder fillTitle = BorderFactory.createTitledBorder("Fill Options");
+                fillPanel.setBorder(fillTitle);
+                fillPanel.setBackground(Color.LIGHT_GRAY);
+                noneBtn = new JRadioButton("None");
+                    noneBtn.setSelected(true);
+                fillBtn = new JRadioButton("Fill");
+                    fillBtn.setEnabled(false);
+                transparentBtn = new JRadioButton("Transparent");
+                    transparentBtn.setEnabled(false);
+                fillGroup = new ButtonGroup();
+                fillGroup.add(noneBtn);
+                fillGroup.add(fillBtn);
+                fillGroup.add(transparentBtn);
+                fillPanel.add(noneBtn);
+                fillPanel.add(fillBtn);
+                fillPanel.add(transparentBtn);
+            shapePanel.add(fillPanel);
         rightPanel.add(shapePanel);
 
             /* Control Buttons */
@@ -145,11 +172,7 @@ public class DrawingPanel {
             currentColorPanel.add(currentColor);
             
             /* Generate Button */
-            var generateBtn = new JButton("Generate Colors");
-            generateBtn.addActionListener(e -> {
-                colorGrid.generateColor();
-                colorGrid.repaint();
-            });
+            generateBtn = new JButton("Generate Colors");
             currentColorPanel.add(generateBtn);
 
         colorGeneratorPanel.add(currentColorPanel);
@@ -158,14 +181,20 @@ public class DrawingPanel {
         JPanel southPanel = new JPanel();
         container.add(BorderLayout.SOUTH, southPanel);
         southPanel.setLayout(new GridLayout(1, 2));
-        TitledBorder pixelTitle = BorderFactory.createTitledBorder("Pixels");
-        southPanel.setBorder(pixelTitle);
-        
-        XYStatus.setText(" ");
-        mouseStatus.setText("Mouse: ...");
-        southPanel.add(XYStatus);
-        southPanel.add(mouseStatus);
 
+        JPanel pixelPanel = new JPanel();
+        TitledBorder pixelTitle = BorderFactory.createTitledBorder("Pixels");
+        pixelPanel.setBorder(pixelTitle);
+        XYStatus.setText(" ");
+        mouseStatus.setText("Ready!");
+        pixelPanel.add(XYStatus);
+        JPanel mouseStatePanel = new JPanel();
+        TitledBorder mouseStateTitle = BorderFactory.createTitledBorder("Status");
+        mouseStatePanel.setBorder(mouseStateTitle);
+        mouseStatePanel.add(mouseStatus);
+
+        southPanel.add(pixelPanel);
+        southPanel.add(mouseStatePanel);
 
         // Event Listener
         DrawingEventListener eventListener = new DrawingEventListener(this);
@@ -184,8 +213,13 @@ public class DrawingPanel {
             circleBtn.addActionListener(eventListener);
             rectangleBtn.addActionListener(eventListener);
             squareBtn.addActionListener(eventListener);
-            
+
+            fillBtn.addActionListener(eventListener);
+            noneBtn.addActionListener(eventListener);
+            transparentBtn.addActionListener(eventListener);
+
             // control
+            generateBtn.addActionListener(eventListener);
             clearBtn.addActionListener(eventListener);
             exitBtn.addActionListener(eventListener);
 
@@ -275,7 +309,27 @@ public class DrawingPanel {
         return squareBtn;
     }
 
+    public JRadioButton getNoneBtn(){
+        return noneBtn;
+    }
+
+    public JRadioButton getFillBtn(){
+        return fillBtn;
+    }
+
+    public JRadioButton getTransparentBtn(){
+        return transparentBtn;
+    }
+
+    public ButtonGroup getFillGroup(){
+        return fillGroup;
+    }
+
     // Control Getters
+    public JButton getGenerateBtn(){
+        return generateBtn;
+    }
+
     public JButton getClearBtn(){
         return clearBtn;
     }

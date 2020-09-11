@@ -21,7 +21,7 @@ public class ColorGrid extends JPanel implements MouseListener {
 		gridRows = rows;
 		gridCols = cols;
 		gridColor = new Color[gridRows][gridCols];
-		lineColor = Color.BLACK;
+		lineColor = Color.white;
 		setPreferredSize(new Dimension(preferredSquareSize*gridCols, 
 				preferredSquareSize*gridRows) );
 		generateColor();
@@ -33,7 +33,7 @@ public class ColorGrid extends JPanel implements MouseListener {
         for (int i = 0; i < gridRows; i++){
 			for (int j = 0; j < gridCols; j++){
 				gridColor[i][j] = new Color( (int)(225*Math.random()),
-				(int)(225*Math.random()),(int)(225*Math.random()) );
+				(int)(225*Math.random()),(int)(225*Math.random()));
 			}
 		}
     }
@@ -56,7 +56,6 @@ public class ColorGrid extends JPanel implements MouseListener {
 		panel.getColorGroup().clearSelection();
 		//
 		panel.setColor(currentColor);
-		panel.getCanvas().setColor(currentColor);
 		panel.getColorSetShow().setColor(currentColor);
 		panel.getCurrentColor().addColor(currentColor);
 		repaint();

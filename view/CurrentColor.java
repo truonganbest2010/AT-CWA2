@@ -19,7 +19,7 @@ public class CurrentColor extends JPanel implements MouseListener {
 	public CurrentColor(DrawingPanel panel, int preferredSquareSize) {
 		this.panel = panel;
 		gridColor = new Color[gridRows][gridCols];
-		lineColor = Color.BLACK;
+		lineColor = Color.white;
 		setPreferredSize( new Dimension(preferredSquareSize*gridCols, 
                 preferredSquareSize*gridRows) );
         for (int i = 0; i < gridCols; i++){
@@ -75,14 +75,10 @@ public class CurrentColor extends JPanel implements MouseListener {
 					g.fillRect( x1, y1, (x2-x1), (y2-y1) );
 				}
 			}
-		}
-		if (lineColor != null) {
+        }
+        if (lineColor != null) {
 			g.setColor(lineColor);
-			for (row = 1; row < gridRows; row++) {
-				int y = (int)(row*cellHeight);
-				g.drawLine(0,y,getWidth(),y);
-			}
-			for (col = 1; col < gridRows; col++) {
+			for (col = 1; col < gridCols; col++) {
 				int x = (int)(col*cellWidth);
 				g.drawLine(x,0,x,getHeight());
 			}
