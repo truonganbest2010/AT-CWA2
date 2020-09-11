@@ -26,7 +26,7 @@ public class DrawingPanel {
     private Color color = Color.black;
 
     private JLabel XYStatus = new JLabel();
-    private JLabel mouseStatus = new JLabel();
+    private JLabel status = new JLabel();
 
     public DrawingPanel(JFrame window) {
         this.window = window;
@@ -46,7 +46,7 @@ public class DrawingPanel {
             redBtn = new JRadioButton("R");
             greenBtn = new JRadioButton("G");
             yellowBtn = new JRadioButton("Y");
-            blackBtn = new JRadioButton("Default (Black)");
+            blackBtn = new JRadioButton("Default");
                 blackBtn.setSelected(true);
             // group color buttons
             colorGroup.add(redBtn);
@@ -186,15 +186,15 @@ public class DrawingPanel {
         TitledBorder pixelTitle = BorderFactory.createTitledBorder("Pixels");
         pixelPanel.setBorder(pixelTitle);
         XYStatus.setText(" ");
-        mouseStatus.setText("Ready!");
+        status.setText("Ready!");
         pixelPanel.add(XYStatus);
-        JPanel mouseStatePanel = new JPanel();
-        TitledBorder mouseStateTitle = BorderFactory.createTitledBorder("Status");
-        mouseStatePanel.setBorder(mouseStateTitle);
-        mouseStatePanel.add(mouseStatus);
+        JPanel statePanel = new JPanel();
+        TitledBorder stateTitle = BorderFactory.createTitledBorder("Status");
+        statePanel.setBorder(stateTitle);
+        statePanel.add(status);
 
         southPanel.add(pixelPanel);
-        southPanel.add(mouseStatePanel);
+        southPanel.add(statePanel);
 
         // Event Listener
         DrawingEventListener eventListener = new DrawingEventListener(this);
@@ -343,8 +343,8 @@ public class DrawingPanel {
         return XYStatus;
     }
 
-    public JLabel setMouseStatuslbl(){
-        return mouseStatus;
+    public JLabel setStatuslbl(){
+        return status;
     }
 
 }

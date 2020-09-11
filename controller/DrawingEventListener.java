@@ -32,21 +32,46 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
         }
         if (source == panel.getClearBtn()){
             panel.getCanvas().getShapeList().clear();
-            panel.setMouseStatuslbl().setText("Cleared!");
+            panel.setStatuslbl().setText("Cleared!");
             panel.getCanvas().repaint();
         }
         if (source == panel.getGenerateBtn()){
             panel.getColorGrid().generateColor();
+            panel.setStatuslbl().setText("Colors Generated!");
             panel.getColorGrid().repaint();
 
         }
 
         // shape
-        if (panel.getPencilBtn().isSelected() || panel.getLineBtn().isSelected()){
+        if (panel.getPencilBtn().isSelected()){
+            panel.setStatuslbl().setText("Pencil: Point");
             panel.getFillBtn().setEnabled(false);
             panel.getTransparentBtn().setEnabled(false);
             panel.getNoneBtn().setSelected(true);
-        } else if (panel.getCircleBtn().isSelected() || panel.getOvalBtn().isSelected() || panel.getRectangleBtn().isSelected() || panel.getSquareBtn().isSelected() ){
+        }
+        if (panel.getLineBtn().isSelected()){
+            panel.setStatuslbl().setText("Shape: Line");
+            panel.getFillBtn().setEnabled(false);
+            panel.getTransparentBtn().setEnabled(false);
+            panel.getNoneBtn().setSelected(true);
+        } 
+        if (panel.getCircleBtn().isSelected()){
+            panel.setStatuslbl().setText("Shape: Circle");
+            panel.getFillBtn().setEnabled(true);
+            panel.getTransparentBtn().setEnabled(true);
+        }
+        if (panel.getOvalBtn().isSelected()){
+            panel.setStatuslbl().setText("Shape: Oval");
+            panel.getFillBtn().setEnabled(true);
+            panel.getTransparentBtn().setEnabled(true);
+        }
+        if (panel.getRectangleBtn().isSelected()){
+            panel.setStatuslbl().setText("Shape: Rectangle");
+            panel.getFillBtn().setEnabled(true);
+            panel.getTransparentBtn().setEnabled(true);
+        }
+        if (panel.getSquareBtn().isSelected()){
+            panel.setStatuslbl().setText("Shape: Square");
             panel.getFillBtn().setEnabled(true);
             panel.getTransparentBtn().setEnabled(true);
         }
@@ -54,6 +79,7 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
         // color
         if (source == panel.getRedBtn()){
             panel.setColor(Color.red);
+            panel.setStatuslbl().setText("Main Color: Red");
             panel.getColorSetShow().setColor(Color.red);
             panel.getColorSetShow().repaint();
             panel.getCurrentColor().addColor(Color.red);
@@ -61,6 +87,7 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
         }
         if (source == panel.getGreenBtn()){
             panel.setColor(Color.green);
+            panel.setStatuslbl().setText("Main Color: Green");
             panel.getColorSetShow().setColor(Color.green);
             panel.getColorSetShow().repaint();
             panel.getCurrentColor().addColor(Color.green);
@@ -68,6 +95,7 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
         }
         if (source == panel.getBlueBtn()){
             panel.setColor(Color.blue);
+            panel.setStatuslbl().setText("Main Color: Blue");
             panel.getColorSetShow().setColor(Color.blue);
             panel.getColorSetShow().repaint();
             panel.getCurrentColor().addColor(Color.blue);
@@ -75,6 +103,7 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
         }
         if (source == panel.getYellowBtn()){
             panel.setColor(Color.yellow);
+            panel.setStatuslbl().setText("Main Color: Yellow");
             panel.getColorSetShow().setColor(Color.yellow);
             panel.getColorSetShow().repaint();
             panel.getCurrentColor().addColor(Color.yellow);
@@ -82,6 +111,7 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
         }
         if (source == panel.getBlackBtn()){
             panel.setColor(Color.black);
+            panel.setStatuslbl().setText("Main Color: Black");
             panel.getColorSetShow().setColor(Color.black);
             panel.getColorSetShow().repaint();
             panel.getCurrentColor().addColor(Color.black);
@@ -94,10 +124,10 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
     @Override
     public void mouseClicked(MouseEvent e) {
         // TODO Auto-generated method stub
-        msg = "Mouse:...";
+        msg = "Mouse...";
 
         panel.setXYStatuslbl().setText(String.valueOf(e.getX()) + " x " + String.valueOf(e.getY()));
-        panel.setMouseStatuslbl().setText("" + msg);
+        panel.setStatuslbl().setText("" + msg);
     }
 
     @Override
@@ -119,7 +149,7 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
             color = new Color(getR, getG, getB, 127);
         }
 
-        msg = "Mouse: Drawing...";
+        msg = "Drawing...";
         startPoint = e.getPoint();
         if (panel.getPencilBtn().isSelected()){
             shape = new Shape();
@@ -183,13 +213,13 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
         panel.getCanvas().repaint();
 
         panel.setXYStatuslbl().setText(String.valueOf(e.getX()) + " x " + String.valueOf(e.getY()));
-        panel.setMouseStatuslbl().setText("" + msg);
+        panel.setStatuslbl().setText("" + msg);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         // TODO Auto-generated method stub
-        msg = "Mouse: Done...";
+        msg = "Done!";
         if (panel.getLineBtn().isSelected()
         || panel.getCircleBtn().isSelected() 
         || panel.getOvalBtn().isSelected() 
@@ -202,7 +232,7 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
         
         panel.getCanvas().repaint();
         panel.setXYStatuslbl().setText(String.valueOf(e.getX()) + " x " + String.valueOf(e.getY()));
-        panel.setMouseStatuslbl().setText("" + msg);
+        panel.setStatuslbl().setText("" + msg);
     }
 
     @Override
@@ -220,7 +250,8 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
         panel.getCanvas().setMouseStart(e.getPoint());
         panel.getCanvas().setMouseEnd(e.getPoint());
 
-        panel.setMouseStatuslbl().setText("" + msg);
+        panel.setXYStatuslbl().setText(" ");
+        panel.setStatuslbl().setText("" + msg);
     }
 
 
@@ -253,18 +284,18 @@ public class DrawingEventListener implements ActionListener, MouseListener, Mous
         panel.getCanvas().repaint();
         if (e.getX() > -1 && e.getY() > -1)
             panel.setXYStatuslbl().setText(String.valueOf(e.getX()) + " x " + String.valueOf(e.getY()));
-        panel.setMouseStatuslbl().setText("" + msg);
+        panel.setStatuslbl().setText("" + msg);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         // TODO Auto-generated method stub
-        msg = "Mouse:...";
+        msg = "Moving On Canvas...";
         panel.getCanvas().setMouseStart(e.getPoint());
         panel.getCanvas().setMouseEnd(e.getPoint());
         
         panel.setXYStatuslbl().setText(String.valueOf(e.getX()) + " x " + String.valueOf(e.getY()));
-        panel.setMouseStatuslbl().setText("" + msg);
+        panel.setStatuslbl().setText("" + msg);
     }
 
     
